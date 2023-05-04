@@ -6,7 +6,7 @@ class Menu:
     HALF_SCREEN_WIDTH = SCREEN_WIDTH // 2
 
     def __init__(self, message, screen):
-        screen.fill((225, 225, 225))
+        screen.fill((128, 0, 0))
         self.font = pygame.font.Font(FONT_STYLE, 30)
         self.text = self.font.render(message, True, (0, 0, 0))
         self.text_rect = self.text.get_rect()
@@ -28,7 +28,7 @@ class Menu:
                 game.run()
 
     def reset_screen_color(self, screen):
-        screen.fill((255, 255, 255))
+        screen.fill((128, 0, 0))
 
     def update_message(self, message):
         self.text = self.font.render(message, True, (0, 0, 0))

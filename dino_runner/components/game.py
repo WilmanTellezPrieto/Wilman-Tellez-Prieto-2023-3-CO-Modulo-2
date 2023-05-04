@@ -1,12 +1,12 @@
 import pygame
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONT_STYLE
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONT_STYLE, DEFAULT_TYPE, CLOCK_TYPE, HAMMER_TYPE
 
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.menu import Menu
 from dino_runner.components.message import Message
-from dino_runner.components.counter import Counter
+from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 
 class Game:
     
@@ -18,24 +18,25 @@ class Game:
         self.clock = pygame.time.Clock()
         self.playing = False
         self.running = False
-        self.game_speed = 20
+        self.game_speed = 2
         self.x_pos_bg = 0
         self.y_pos_bg = 380
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
-        self.menu = Menu('Press any key to start .. ', self.screen)
+        self.menu = Menu('RUN DINO RUN!!', self.screen)
         self.death_count = 0
-        self.score = 0 
+        self.score = 0
         self.max_score = 0
         self.highest_score = 0
         self.message = Message()
         self.half_screen_height = SCREEN_HEIGHT // 2
         self.half_screen_width = SCREEN_WIDTH // 2
-
+        self.power_up_manager  = PowerUpManager()
 
     def execute(self):
         self.running = True
         while self.running:
+            self.audio('dino_runner/assets/Other/audio.mp3')
             if not self.playing:
                 if self.death_count == 0:
                     self.show_menu()
@@ -46,7 +47,6 @@ class Game:
 
 
     def run(self):
-        # Game loop: events - update - draw
         self.reset_all()
         self.playing = True
         while self.playing:
@@ -64,16 +64,21 @@ class Game:
         self.player.update(user_input)
         self.update_score()
         self.obstacle_manager.update(self)
+        self.power_up_manager.update(self)
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))
+        if self.score < 700:
+            self.screen.fill((128, 128, 128))
+        elif self.score > 700:
+            self.screen.fill((64, 64, 128))
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
+        self.power_up_manager.draw(self.screen)
         self.draw_score()
+        self.draw_power_up_time()
         pygame.display.update()
-        #pygame.display.flip()
 
     def draw_background(self):
         image_width = BG.get_width()
@@ -122,3 +127,24 @@ class Game:
         self.game_speed = 20
         self.player.reset()
         self.x_pos_bg = 0
+        self.power_up_manager.reset()
+
+    def draw_power_up_time(self):
+        if self.player.has_power_up:
+
+            time_to_show = round((self.player.power_time_up - pygame.time.get_ticks()) / 1000, 2)
+
+            if time_to_show >= 0:
+                if self.player.type == HAMMER_TYPE:
+                    self.message.print_message(f'DESTRUCTIVE {self.player.type.upper()} IS ENABLED FOR {time_to_show}', 540, 50, self.screen)
+                elif self.player.type == CLOCK_TYPE:
+                    self.message.print_message(f'SLOWDOWN CLOCK HAS BEEN ENABLED', 540, 50, self.screen)
+                    self.game_speed = 20
+            else: 
+                self.player.has_power_up = False
+                self.player.type = DEFAULT_TYPE
+
+    def audio(self, route):
+        pygame.mixer.init()
+        pygame.mixer.music.load(route)
+        pygame.mixer.music.play()

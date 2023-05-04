@@ -1,8 +1,7 @@
 import pygame
 import os
-
 # Global Constants
-TITLE = "Chrome Dino Runner"
+TITLE = "RUN DINO RUN!!"
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
@@ -15,12 +14,10 @@ RUNNING = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
 ]
-
 RUNNING_SHIELD = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1Shield.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2Shield.png")),
 ]
-
 RUNNING_HAMMER = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1Hammer.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2Hammer.png")),
@@ -62,14 +59,17 @@ BIRD = [
 ]
 
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
-SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
+CLOCK = pygame.image.load(os.path.join(IMG_DIR, 'Other/clock.png'))
 HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
 
 BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
-
 DEFAULT_TYPE = "default"
-SHIELD_TYPE = 'shield'
+HAMMER_TYPE = 'hammer'
+CLOCK_TYPE = 'clock'
 
 FONT_STYLE = 'freesansbold.ttf'
+DEAD = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDead.png"))
+]

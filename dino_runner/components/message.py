@@ -17,14 +17,14 @@ class Message:
         self.text = self.font.render(message, True, (0, 0, 0))
         self.text_rect = self.text.get_rect()
         self.text_rect.center = (position_y, position_x)
-        pygame.display.update()
+        #ygame.display.update()
         self.draw(screen)
 
     def draw(self, screen):
         screen.blit(self.text, self.text_rect)
 
     def reset_screen_color(self, screen):
-        screen.fill((255, 255, 255))
+        screen.fill((0, 128, 0))
     
     def handle_events_on_menu(self, game):
         for event in pygame.event.get():
